@@ -14,7 +14,7 @@ Coming soon.
 Usage
 ---
 
-```
+```lua
 local trickle = require 'trickle'
 local stream = trickle.create()
 
