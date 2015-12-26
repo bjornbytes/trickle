@@ -1,3 +1,7 @@
+-- trickle v0.1.0 - Lua bitstream
+-- https://github.com/bjornbytes/trickle
+-- MIT License
+
 local trickle = {}
 
 local function byteExtract(x, a, b)
