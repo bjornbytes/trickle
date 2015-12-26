@@ -124,7 +124,7 @@ Documentation
 #### Writing
 
 - `stream:write(value, type)` - Writes a value to the stream.  `type` can either be 'string',
-'float', 'bool', or '<n>bits' for integers, where `n` is the number of bits the integer should use.
+'float', 'bool', or 'nbits' for integers, where `n` is the number of bits the integer should use.
 - `stream:writeString(str)` - Writes a string to the stream.  Uses one byte per character.
 - `stream:writeBool(bool)` - Writes a boolean to the stream.  Uses one bit.
 - `stream:writeFloat(float)` - Writes a float to the stream.  Note that the float is currently
