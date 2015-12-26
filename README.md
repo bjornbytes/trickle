@@ -113,7 +113,38 @@ stream:pack(playerData, signature) -- Error: Only part of message delta group "x
 Documentation
 ---
 
-Coming soon.
+- `trickle.create([str])` - Creates a stream.  If `str` is provided then the contents of the stream
+  are set to this initial value.
+- `tostring(stream)` - Serialize the stream's data to a string.
+- `stream:clear()` - Resets the stream to contain no data.
+- `stream:truncate()` - If a byte has been partially written, it will not be present in the stream
+  yet.  `truncate` pads the rest of the byte with null data and adds it to the stream's data.  This
+  is mostly for internal use, and is automatically called when converting the stream to a string.
+
+#### Writing
+
+- `stream:write(value, type)` - Writes a value to the stream.  `type` can either be 'string',
+'float', 'bool', or '<n>bits' for integers, where `n` is the number of bits the integer should use.
+- `stream:writeString(str)` - Writes a string to the stream.  Uses one byte per character.
+- `stream:writeBool(bool)` - Writes a boolean to the stream.  Uses one bit.
+- `stream:writeFloat(float)` - Writes a float to the stream.  Note that the float is currently
+  serialized as a string.  This is suboptimal and should be improved in the future.
+- `stream:writeBits(value, n)` - Writes a number to the stream, using `n` bits.
+
+#### Reading
+
+- `stream:read(type)` - Reads and returns a value from the stream.
+- `stream:readString()` - Reads and returns a string.
+- `stream:readBool()` - Reads and returns a boolean.
+- `stream:readFloat()` - Reads and returns a float.
+- `stream:readBits(n)` - Readss `n` bits from the string and returns them as a number.
+
+#### Signatures
+
+- `stream:pack(data, signature)` - Packs `data` into the stream according to the structure specified
+  by `signature`.
+- `stream:unpack(signature)` - Uses `signature` to read data from the string, returning a table with
+  the data.
 
 License
 ---
