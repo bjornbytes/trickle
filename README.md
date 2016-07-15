@@ -18,6 +18,8 @@ stream:write(true, 'bool')
 stream:write(1.8, 'float')
 
 -- send over the network
+-- to convert a stream to a string, call tostring(stream)
+-- to convert a string to a stream, call trickle.create(string)
 
 stream:read('3bits') -- 7
 stream:read('bool') -- true
