@@ -48,7 +48,7 @@ Then, pack a message into a trickle stream using the signature:
 local playerData = {
   playerId = 1,
   x = 63,
-  y = 41
+  y = 41,
   direction = 270
 }
 
