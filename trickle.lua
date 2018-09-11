@@ -4,24 +4,16 @@
 
 local trickle = {}
 
-local function byteExtract(x, a, b)
-  b = b or a
-  x = x % (2 ^ (b + 1))
-  for i = 1, a do
-    x = math.floor(x / 2)
-  end
-  return x
+local bit = bit32 or require 'bit'
+local lshift, rshift, band, bxor, bnot = bit.lshift, bit.rshift, bit.band, bit.bxor, bit.bnot
+
+local extract = bit.extract or function(x, i, n)
+  return band(rshift(x, i), lshift(1, n or 1) - 1)
 end
 
-local function byteInsert(x, y, a, b)
-  local res = x
-  for i = a, b do
-    local e = byteExtract(y, i - a)
-    if e ~= byteExtract(x, i) then
-      res = (e == 1) and res + (2 ^ i) or res - (2 ^ i)
-    end
-  end
-  return res
+local replace = bit.replace or function(x, y, i, n)
+  local mask = lshift(rshift(bit.bnot(0), 31 - (n - 1)), i)
+  return bit.bxor(x, bit.band(bit.bxor(x, lshift(y, i)), mask))
 end
 
 function trickle.create(str)
@@ -83,8 +75,8 @@ function trickle:writeBits(x, n)
   repeat
     if not self.byte then self.byte = 0 self.byteLen = 0 end
     local numWrite = math.min(n, (7 - self.byteLen) + 1)
-    local toWrite = byteExtract(x, idx, idx + (numWrite - 1))
-    self.byte = byteInsert(self.byte, toWrite, self.byteLen, self.byteLen + (numWrite - 1))
+    local toWrite = extract(x, idx, numWrite)
+    self.byte = replace(self.byte, toWrite, self.byteLen, numWrite)
     self.byteLen = self.byteLen + numWrite
 
     if self.byteLen == 8 then
@@ -138,7 +130,7 @@ function trickle:readBits(n)
   while n > 0 do
     if not self.byte then self.byte = self.str:byte(1) or 0 self.byteLen = 0 end
     local numRead = math.min(n, (7 - self.byteLen) + 1)
-    x = x + (byteExtract(self.byte, self.byteLen, self.byteLen + (numRead - 1)) * (2 ^ idx))
+    x = x + (extract(self.byte, self.byteLen, numRead) * (2 ^ idx))
     self.byteLen = self.byteLen + numRead
 
     if self.byteLen == 8 then
