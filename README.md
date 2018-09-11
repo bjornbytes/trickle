@@ -61,8 +61,10 @@ stream:pack(playerData, signature)
 local playerData = stream:unpack(signature)
 ```
 
+### Delta Groups
+
 Let's say we only want to send the position of the player if it has changed.  Right now this isn't
-possible with our signature, because we have to send 8 bits for the x position and 8 bits for the y
+possible with our signature, because we *have* to send 8 bits for the x position and 8 bits for the y
 position to keep the structure of the signature uniform for the receiving end.  **Delta groups**
 provide a mechanism to specify these optional groups of data.
 
