@@ -1,6 +1,8 @@
 Trickle
 ===
 
+> **NOTE** - It's probably better to use Lua's built-in `string.pack` and `string.unpack` now.
+
 Trickle is a bitstream for Lua.  When writing data to a trickle stream, you must specify its size in
 bits.  The stream will automatically pack this data into compressed bytes, which often leads to
 greatly reduced network bandwidth.  This is useful in networking applications where it is necessary
